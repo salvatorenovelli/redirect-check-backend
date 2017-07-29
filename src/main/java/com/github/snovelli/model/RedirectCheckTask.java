@@ -38,6 +38,11 @@ public class RedirectCheckTask {
         return inputFile;
     }
 
+
+    public boolean isCompleted() {
+        return status.equals(TaskStatus.COMPLETED);
+    }
+
     public String getOutputUri() {
         return outputFile.getFileName().toString();
 //        MvcUriComponentsBuilder
