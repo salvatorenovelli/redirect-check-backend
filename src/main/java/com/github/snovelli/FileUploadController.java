@@ -1,7 +1,6 @@
 package com.github.snovelli;
 
 import com.github.snovelli.exception.StorageFileNotFoundException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -48,7 +47,7 @@ public class FileUploadController {
     }
 
     @PostMapping("/")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, HttpSession session, RedirectAttributes redirectAttributes) throws IOException, InterruptedException, InvalidFormatException, ExecutionException {
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, HttpSession session, RedirectAttributes redirectAttributes) throws IOException, InterruptedException, ExecutionException {
 
         Path storedFile = storageService.store(getUserId(session), file);
         taskQueue.appendTask(storedFile);

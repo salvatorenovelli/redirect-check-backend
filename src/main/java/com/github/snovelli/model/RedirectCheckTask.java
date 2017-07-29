@@ -1,11 +1,8 @@
 package com.github.snovelli.model;
 
-import com.github.snovelli.FileUploadController;
 import lombok.ToString;
 import net.jcip.annotations.ThreadSafe;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import javax.servlet.http.HttpSession;
 import java.nio.file.Path;
 
 @ToString

@@ -1,10 +1,8 @@
 package com.github.snovelli;
 
-
 import com.github.snovelli.model.ExcelParser;
 import com.github.snovelli.model.RedirectCheckTask;
 import com.github.snovelli.model.RedirectCheckTaskRunner;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
@@ -31,7 +29,7 @@ public class TaskQueue {
 
     }
 
-    public void appendTask(Path storedFile) throws IOException, InvalidFormatException, ExecutionException, InterruptedException {
+    public void appendTask(Path storedFile) throws IOException, ExecutionException, InterruptedException {
 
         RedirectCheckTask task = new RedirectCheckTask(storedFile);
         tasksPerUser.add(task);

@@ -1,16 +1,17 @@
 package com.github.snovelli.model;
 
-import com.github.salvatorenovelli.model.RedirectCheckResponse;
-import com.github.salvatorenovelli.model.RedirectSpecification;
+
+
+import com.github.salvatorenovelli.redirectcheck.DefaultRedirectSpecAnalyser;
+import com.github.salvatorenovelli.redirectcheck.ParallelRedirectSpecAnalyser;
+import com.github.salvatorenovelli.redirectcheck.RedirectCheckResponseFactory;
 import com.github.salvatorenovelli.redirectcheck.cli.ProgressMonitor;
 import com.github.salvatorenovelli.redirectcheck.domain.DefaultRedirectChainAnalyser;
 import com.github.salvatorenovelli.redirectcheck.domain.RedirectChainAnalyser;
 import com.github.salvatorenovelli.redirectcheck.http.DefaultHttpConnectorFactory;
 import com.github.salvatorenovelli.redirectcheck.io.excel.RedirectCheckResponseExcelSerializer;
-import com.github.salvatorenovelli.redirectcheck.redirect.ParallelRedirectSpecAnalyser;
-import com.github.salvatorenovelli.redirectcheck.redirectcheck.RedirectCheckResponseFactory;
-import com.github.salvatorenovelli.seo.redirect.DefaultRedirectSpecAnalyser;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import com.github.salvatorenovelli.redirectcheck.model.RedirectCheckResponse;
+import com.github.salvatorenovelli.redirectcheck.model.RedirectSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +49,7 @@ public class RedirectCheckTaskRunner implements Runnable {
             serialise(specs, responses);
             task.setStatus(COMPLETED);
 
-        } catch (IOException | InvalidFormatException | InterruptedException | ExecutionException e) {
+        } catch (IOException | InterruptedException | ExecutionException e) {
             logger.error("Error while running task", e);
             task.setStatus(TaskStatus.FAILED);
         }
@@ -71,7 +72,7 @@ public class RedirectCheckTaskRunner implements Runnable {
         });
     }
 
-    private List<RedirectSpecification> parse() throws IOException, InvalidFormatException {
+    private List<RedirectSpecification> parse() throws IOException {
         task.setStatus(PARSING);
         return parser.getSpecsFromFile(task.getInputFile());
     }
