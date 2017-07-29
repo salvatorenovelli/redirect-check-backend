@@ -53,8 +53,6 @@ public class FileUploadController {
         Path storedFile = storageService.store(getUserId(session), file);
         redirectCheckWorker.appendTask(storedFile);
 
-        redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + "!");
-
         return "redirect:/";
     }
 

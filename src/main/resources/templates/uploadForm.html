@@ -18,11 +18,6 @@
     </h1>
 
     <p>
-    <div th:if="${message}">
-        <h2 th:text="${message}"/>
-    </div>
-    </p>
-    <p>
     <form class="form-group" method="POST" enctype="multipart/form-data" action="/">
         <div class="form-group">
             <label for="file">File to upload</label>
@@ -35,24 +30,6 @@
 
 
     <div class="jumbotron">
-
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Source File</th>
-                <th>Status</th>
-                <th>Output</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="file : ${files}">
-                <td th:text="${file}"></td>
-                <td>Pending</td>
-                <td th:text="${file}"></td>
-            </tr>
-            </tbody>
-        </table>
-
         <table class="table">
             <thead>
             <tr>
