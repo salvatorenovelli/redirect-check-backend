@@ -12,7 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.stream.Collectors;
 
 @Controller
@@ -26,13 +28,13 @@ public class FileUploadController {
     }
 
     @GetMapping("/")
-    public String listUploadedFiles(Model model) throws IOException {
+    public String listUploadedFiles(Model model, HttpSession session) throws IOException {
 
         model.addAttribute("files", storageService
-                .loadAll()
+                .loadAll(session.getId())
                 .map(path ->
                         MvcUriComponentsBuilder
-                                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
+                                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString(), (HttpSession) session)
                                 .build().toString())
                 .collect(Collectors.toList()));
 
@@ -41,20 +43,22 @@ public class FileUploadController {
 
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename, HttpSession session) {
 
-        Resource file = storageService.loadAsResource(filename);
+        Resource file = storageService.loadAsResource(session.getId(), filename);
+
+
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getFilename()+"\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
 
     @PostMapping("/")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, Principal principal, HttpSession session,
                                    RedirectAttributes redirectAttributes) {
 
-        storageService.store(file);
+        storageService.store(session.getId(), file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
