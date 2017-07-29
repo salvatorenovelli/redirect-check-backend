@@ -1,9 +1,9 @@
 package com.github.snovelli;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class RedirectCheckCloudApplication {
@@ -12,13 +12,17 @@ public class RedirectCheckCloudApplication {
         SpringApplication.run(RedirectCheckCloudApplication.class, args);
     }
 
-
-    @RestController
-    class MyController {
-
-        @GetMapping("/hello")
-        public String sayHello() {
-            return "Hello!";
-        }
+    @Bean
+    public static StorageService getStorageService() {
+        return new FileSystemStorageService();
     }
+
+    @Bean
+    CommandLineRunner init(StorageService storageService) {
+        return (args) -> {
+            storageService.deleteAll();
+            storageService.init();
+        };
+    }
+
 }
