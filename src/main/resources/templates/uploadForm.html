@@ -52,6 +52,23 @@
             </tr>
             </tbody>
         </table>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Source File</th>
+                <th>Status</th>
+                <th>Output</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="task : ${tasks}">
+                <td th:text="${task.getInputFileName()}"></td>
+                <td th:text="${task.getStatus()}"></td>
+                <td th:text="..."></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 

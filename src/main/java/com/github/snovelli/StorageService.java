@@ -11,7 +11,7 @@ public interface StorageService {
 
     void init();
 
-    void store(String userID, MultipartFile file);
+    Path store(String userID, MultipartFile file) throws IOException;
 
     Stream<Path> loadAll(String userId) throws IOException;
 

@@ -32,21 +32,12 @@ class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void store(String userID, MultipartFile file) {
+    public Path store(String userID, MultipartFile file) throws IOException {
         logger.info("Storing: {}", file.getOriginalFilename());
-
-        try {
-
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            Path path = getPathForUser(userID).resolve(file.getOriginalFilename());
-            Files.write(path, bytes);
-
-//           redirectAttributes.addFlashAttribute("message", "You successfully uploaded '" + file.getOriginalFilename() + "'");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        byte[] bytes = file.getBytes();
+        Path path = getPathForUser(userID).resolve(file.getOriginalFilename());
+        Files.write(path, bytes);
+        return path;
     }
 
     @Override

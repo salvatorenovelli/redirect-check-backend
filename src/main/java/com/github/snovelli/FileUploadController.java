@@ -15,24 +15,26 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.security.Principal;
 import java.util.stream.Collectors;
 
 @Controller
 public class FileUploadController {
 
     private final StorageService storageService;
+    private final RedirectCheckWorker redirectCheckWorker;
 
     @Autowired
-    public FileUploadController(StorageService storageService) {
+    public FileUploadController(StorageService storageService, RedirectCheckWorker redirectCheckWorker) {
         this.storageService = storageService;
+        this.redirectCheckWorker = redirectCheckWorker;
     }
 
     @GetMapping("/")
     public String listUploadedFiles(Model model, HttpSession session) throws IOException {
 
+        model.addAttribute("tasks", redirectCheckWorker.listTasks());
         model.addAttribute("files", storageService
-                .loadAll(session.getId())
+                .loadAll(getUserId(session))
                 .map(path -> createUriForFile(session, path))
                 .collect(Collectors.toList()));
 
@@ -49,8 +51,7 @@ public class FileUploadController {
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename, HttpSession session) {
 
-        Resource file = storageService.loadAsResource(session.getId(), filename);
-
+        Resource file = storageService.loadAsResource(getUserId(session), filename);
 
         return ResponseEntity
                 .ok()
@@ -59,14 +60,18 @@ public class FileUploadController {
     }
 
     @PostMapping("/")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, Principal principal, HttpSession session,
-                                   RedirectAttributes redirectAttributes) {
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
 
-        storageService.store(session.getId(), file);
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
+        Path storedFile = storageService.store(getUserId(session), file);
+        redirectCheckWorker.appendTask(storedFile);
+
+        redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + "!");
 
         return "redirect:/";
+    }
+
+    private String getUserId(HttpSession session) {
+        return session.getId();
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)
