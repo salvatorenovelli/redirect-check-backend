@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.security.Principal;
 import java.util.stream.Collectors;
 
@@ -32,13 +33,16 @@ public class FileUploadController {
 
         model.addAttribute("files", storageService
                 .loadAll(session.getId())
-                .map(path ->
-                        MvcUriComponentsBuilder
-                                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString(), (HttpSession) session)
-                                .build().toString())
+                .map(path -> createUriForFile(session, path))
                 .collect(Collectors.toList()));
 
         return "uploadForm";
+    }
+
+    private String createUriForFile(HttpSession session, Path path) {
+        return MvcUriComponentsBuilder
+                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString(), session)
+                .build().toString();
     }
 
     @GetMapping("/files/{filename:.+}")
