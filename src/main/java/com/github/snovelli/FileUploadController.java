@@ -30,21 +30,9 @@ public class FileUploadController {
     }
 
     @GetMapping("/")
-    public String listUploadedFiles(Model model, HttpSession session) throws IOException {
-
+    public String listUploadedFiles(Model model) throws IOException {
         model.addAttribute("tasks", redirectCheckWorker.listTasks());
-        model.addAttribute("files", storageService
-                .loadAll(getUserId(session))
-                .map(path -> createUriForFile(session, path))
-                .collect(Collectors.toList()));
-
         return "uploadForm";
-    }
-
-    private String createUriForFile(HttpSession session, Path path) {
-        return MvcUriComponentsBuilder
-                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString(), session)
-                .build().toString();
     }
 
     @GetMapping("/files/{filename:.+}")
