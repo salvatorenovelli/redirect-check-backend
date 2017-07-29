@@ -4,8 +4,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.context.annotation.SessionScope;
 
+import javax.servlet.http.HttpSession;
 import java.nio.file.Paths;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SpringBootApplication
 public class RedirectCheckCloudApplication {
@@ -25,6 +29,11 @@ public class RedirectCheckCloudApplication {
             storageService.deleteAll();
             storageService.init();
         };
+    }
+
+    @Bean
+    public ExecutorService getExecutorService() {
+        return Executors.newFixedThreadPool(2);
     }
 
 }

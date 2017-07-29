@@ -1,6 +1,7 @@
 package com.github.snovelli;
 
 import com.github.snovelli.exception.StorageFileNotFoundException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -9,29 +10,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.stream.Collectors;
+import java.util.concurrent.ExecutionException;
 
 @Controller
 public class FileUploadController {
 
     private final StorageService storageService;
-    private final RedirectCheckWorker redirectCheckWorker;
+    private final TaskQueue taskQueue;
 
     @Autowired
-    public FileUploadController(StorageService storageService, RedirectCheckWorker redirectCheckWorker) {
+    public FileUploadController(StorageService storageService, TaskQueue taskQueue) {
         this.storageService = storageService;
-        this.redirectCheckWorker = redirectCheckWorker;
+        this.taskQueue = taskQueue;
     }
 
     @GetMapping("/")
     public String listUploadedFiles(Model model) throws IOException {
-        model.addAttribute("tasks", redirectCheckWorker.listTasks());
+        model.addAttribute("tasks", taskQueue.listTasks());
         return "uploadForm";
     }
 
@@ -48,10 +48,10 @@ public class FileUploadController {
     }
 
     @PostMapping("/")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, HttpSession session, RedirectAttributes redirectAttributes) throws IOException, InterruptedException, InvalidFormatException, ExecutionException {
 
         Path storedFile = storageService.store(getUserId(session), file);
-        redirectCheckWorker.appendTask(storedFile);
+        taskQueue.appendTask(storedFile);
 
         return "redirect:/";
     }

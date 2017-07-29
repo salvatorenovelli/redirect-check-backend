@@ -42,7 +42,7 @@
             <tr th:each="task : ${tasks}">
                 <td th:text="${task.getInputFileName()}"></td>
                 <td th:text="${task.getStatus()}"></td>
-                <td th:text="..."></td>
+                <td ><a th:href="${'/files/' + task.getOutputUri()}" th:text="${task.getOutputUri()}"/></td>
             </tr>
             </tbody>
         </table>
