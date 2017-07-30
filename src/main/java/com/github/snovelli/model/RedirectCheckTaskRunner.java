@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -44,9 +45,9 @@ public class RedirectCheckTaskRunner implements Runnable {
         try {
 
             task.setStatus(IN_PROGRESS);
-            List<RedirectSpecification> specs = parse();
+            List<RedirectSpecification> specs = parse(task.getInputFile());
             List<RedirectCheckResponse> responses = analyse(specs);
-            serialise(specs, responses);
+            serialise(specs, responses, getOutputFileName());
             task.setStatus(COMPLETED);
 
         } catch (IOException | InterruptedException | ExecutionException e) {
@@ -56,13 +57,16 @@ public class RedirectCheckTaskRunner implements Runnable {
 
     }
 
-    private void serialise(List<RedirectSpecification> specs, List<RedirectCheckResponse> responses) throws IOException {
-        String outputFileName = removeExtension(task.getInputFile().toString()) + "_out.xls";
+    private void serialise(List<RedirectSpecification> specs, List<RedirectCheckResponse> responses, String outputFileName) throws IOException {
         RedirectCheckResponseExcelSerializer output = new RedirectCheckResponseExcelSerializer(outputFileName);
         output.addInvalidSpecs(invalid(specs));
         output.addResponses(responses);
         output.write();
         task.setOutputFile(Paths.get(outputFileName));
+    }
+
+    private String getOutputFileName() {
+        return removeExtension(task.getInputFile().toString()) + "_out.xls";
     }
 
     private List<RedirectCheckResponse> analyse(List<RedirectSpecification> specs) throws IOException, ExecutionException, InterruptedException {
@@ -72,9 +76,9 @@ public class RedirectCheckTaskRunner implements Runnable {
         });
     }
 
-    private List<RedirectSpecification> parse() throws IOException {
+    private List<RedirectSpecification> parse(Path inputFile) throws IOException {
         task.setStatus(PARSING);
-        return parser.getSpecsFromFile(task.getInputFile());
+        return parser.getSpecsFromFile(inputFile);
     }
 
     private String removeExtension(String inputFilename) {
