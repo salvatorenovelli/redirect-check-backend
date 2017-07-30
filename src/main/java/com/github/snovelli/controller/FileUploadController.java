@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.util.concurrent.ExecutionException;
 
 @Controller
+@RequestMapping("/api")
 public class FileUploadController {
 
     private final StorageService storageService;
