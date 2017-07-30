@@ -10,11 +10,16 @@ import java.nio.file.Path;
 public class RedirectCheckTask {
 
     private final Path inputFile;
+    private final TaskProgress taskProgress = new TaskProgress();
     private volatile Path outputFile;
     private volatile TaskStatus status = TaskStatus.PENDING;
 
     public RedirectCheckTask(Path inputFile) {
         this.inputFile = inputFile;
+    }
+
+    public TaskProgress getTaskProgress() {
+        return taskProgress;
     }
 
     public String getInputFileName() {
@@ -39,14 +44,14 @@ public class RedirectCheckTask {
     }
 
 
-    public boolean isCompleted() {
+    private boolean isCompleted() {
         return status.equals(TaskStatus.COMPLETED);
     }
 
     public String getOutputUri() {
-        return outputFile.getFileName().toString();
-//        MvcUriComponentsBuilder
-//                .fromMethodName(FileUploadController.class, "serveFile", outputFile.getFileName().toString())
-//                .build().toString();
+        if (isCompleted()) {
+            return outputFile.getFileName().toString();
+        }
+        return "";
     }
 }

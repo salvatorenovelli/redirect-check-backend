@@ -1,6 +1,5 @@
 package com.github.snovelli;
 
-import com.github.snovelli.model.ExcelParser;
 import com.github.snovelli.model.RedirectCheckTask;
 import com.github.snovelli.model.RedirectCheckTaskRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class TaskQueue {
 
         RedirectCheckTask task = new RedirectCheckTask(storedFile);
         tasksPerUser.add(task);
-        executorService.submit(new RedirectCheckTaskRunner(task, new ExcelParser()));
+        executorService.submit(new RedirectCheckTaskRunner(task));
     }
 
 

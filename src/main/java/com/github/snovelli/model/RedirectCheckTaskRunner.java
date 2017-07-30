@@ -1,7 +1,6 @@
 package com.github.snovelli.model;
 
 
-
 import com.github.salvatorenovelli.redirectcheck.DefaultRedirectSpecAnalyser;
 import com.github.salvatorenovelli.redirectcheck.ParallelRedirectSpecAnalyser;
 import com.github.salvatorenovelli.redirectcheck.RedirectCheckResponseFactory;
@@ -9,6 +8,7 @@ import com.github.salvatorenovelli.redirectcheck.cli.ProgressMonitor;
 import com.github.salvatorenovelli.redirectcheck.domain.DefaultRedirectChainAnalyser;
 import com.github.salvatorenovelli.redirectcheck.domain.RedirectChainAnalyser;
 import com.github.salvatorenovelli.redirectcheck.http.DefaultHttpConnectorFactory;
+import com.github.salvatorenovelli.redirectcheck.io.RedirectSpecExcelParser;
 import com.github.salvatorenovelli.redirectcheck.io.excel.RedirectCheckResponseExcelSerializer;
 import com.github.salvatorenovelli.redirectcheck.model.RedirectCheckResponse;
 import com.github.salvatorenovelli.redirectcheck.model.RedirectSpecification;
@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -29,14 +30,12 @@ public class RedirectCheckTaskRunner implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(RedirectCheckTaskRunner.class);
 
-    private static final int NUM_WORKERS = 50;
+    private static final int NUM_WORKERS = 10;
     private final RedirectCheckTask task;
-    private final ExcelParser parser;
 
 
-    public RedirectCheckTaskRunner(RedirectCheckTask task, ExcelParser parser) {
+    public RedirectCheckTaskRunner(RedirectCheckTask task) {
         this.task = task;
-        this.parser = parser;
     }
 
 
@@ -66,19 +65,22 @@ public class RedirectCheckTaskRunner implements Runnable {
     }
 
     private String getOutputFileName() {
-        return removeExtension(task.getInputFile().toString()) + "_out.xls";
+        return removeExtension(task.getInputFile().toString()) + "_out.xlsx";
     }
 
     private List<RedirectCheckResponse> analyse(List<RedirectSpecification> specs) throws IOException, ExecutionException, InterruptedException {
         task.setStatus(TaskStatus.ANALYSING);
         DefaultRedirectChainAnalyser defaultRedirectChainAnalyser = new DefaultRedirectChainAnalyser(new DefaultHttpConnectorFactory());
-        return analyseRedirects(valid(specs), defaultRedirectChainAnalyser, () -> {
-        });
+        return analyseRedirects(valid(specs), defaultRedirectChainAnalyser, task.getTaskProgress()::tick);
     }
 
     private List<RedirectSpecification> parse(Path inputFile) throws IOException {
         task.setStatus(PARSING);
-        return parser.getSpecsFromFile(inputFile);
+        RedirectSpecExcelParser parser = new RedirectSpecExcelParser(inputFile.toString());
+        List<RedirectSpecification> specs = new ArrayList<>();
+        parser.parse(specs::add);
+        task.getTaskProgress().setTotalTicks(parser.getNumSpecs());
+        return specs;
     }
 
     private String removeExtension(String inputFilename) {
@@ -102,4 +104,5 @@ public class RedirectCheckTaskRunner implements Runnable {
     private List<RedirectSpecification> valid(List<RedirectSpecification> specs) {
         return specs.stream().filter(RedirectSpecification::isValid).collect(Collectors.toList());
     }
+
 }

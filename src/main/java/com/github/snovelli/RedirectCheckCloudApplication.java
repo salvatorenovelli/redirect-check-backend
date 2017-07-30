@@ -4,9 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.context.annotation.SessionScope;
 
-import javax.servlet.http.HttpSession;
 import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,7 +31,7 @@ public class RedirectCheckCloudApplication {
 
     @Bean
     public ExecutorService getExecutorService() {
-        return Executors.newFixedThreadPool(2);
+        return Executors.newSingleThreadExecutor();
     }
 
 }
