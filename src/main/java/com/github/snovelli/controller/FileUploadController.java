@@ -1,5 +1,7 @@
-package com.github.snovelli;
+package com.github.snovelli.controller;
 
+import com.github.snovelli.StorageService;
+import com.github.snovelli.TaskQueue;
 import com.github.snovelli.exception.StorageFileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -28,11 +30,11 @@ public class FileUploadController {
         this.taskQueue = taskQueue;
     }
 
-    @GetMapping("/")
-    public String listUploadedFiles(Model model) throws IOException {
-        model.addAttribute("tasks", taskQueue.listTasks());
-        return "uploadForm";
-    }
+//    @GetMapping("/")
+//    public String listUploadedFiles(Model model) throws IOException {
+//        model.addAttribute("tasks", taskQueue.listTasks());
+//        return "uploadForm";
+//    }
 
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
