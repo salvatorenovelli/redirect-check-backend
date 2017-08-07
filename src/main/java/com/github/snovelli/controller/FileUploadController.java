@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutionException;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class FileUploadController {
 
@@ -30,12 +30,6 @@ public class FileUploadController {
         this.storageService = storageService;
         this.taskQueue = taskQueue;
     }
-
-//    @GetMapping("/")
-//    public String listUploadedFiles(Model model) throws IOException {
-//        model.addAttribute("tasks", taskQueue.listTasks());
-//        return "uploadForm";
-//    }
 
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
@@ -49,13 +43,10 @@ public class FileUploadController {
                 .body(file);
     }
 
-    @PostMapping("/")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, HttpSession session, RedirectAttributes redirectAttributes) throws IOException, InterruptedException, ExecutionException {
-
+    @PostMapping("/upload")
+    public void handleFileUpload(@RequestParam("file") MultipartFile file, HttpSession session, RedirectAttributes redirectAttributes) throws IOException, InterruptedException, ExecutionException {
         Path storedFile = storageService.store(getUserId(session), file);
         taskQueue.appendTask(storedFile);
-
-        return "redirect:/";
     }
 
     private String getUserId(HttpSession session) {
