@@ -12,8 +12,7 @@ class App extends Component {
                 </div>
                 <Basic/>
 
-                <Tasks />
-
+                <Tasks/>
 
 
                 <p className="App-intro">
@@ -25,26 +24,53 @@ class App extends Component {
 }
 
 
-class Tasks extends Component{
-    render(){
-        return(
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Source File</th>
-                    <th>Status</th>
-                    <th>Output</th>
-                </tr>
-                </thead>
-                <tbody>
+class Tasks extends Component {
 
-                {/*<tr th:each="task : ${tasks}">*/}
-                    {/*<td th:text="${task.getInputFileName()}"></td>*/}
-                    {/*<td th:text="${task.getStatus() + ' '+ task.getTaskProgress().getPerventageCompleted()} + '%'"></td>*/}
-                    {/*<td><a th:href="${'/files/' + task.getOutputUri()}" th:text="${task.getOutputUri()}"/></td>*/}
-                {/*</tr>*/}
-                </tbody>
-            </table>
+    constructor() {
+        super();
+        this.state = {
+            data: []
+        };
+    }
+
+    componentDidMount() {
+        Request
+            .get('/api/tasks')
+            .set('Accept', 'application/json')
+            .end((err, res) => {
+                this.setState({data: res.body});
+                console.log(res.body);
+            });
+    }
+
+    render() {
+
+
+        return (
+
+            <div className="jumbotron">
+
+                <table className="table">
+                    <thead>
+                    <tr>
+                        <th>Source File</th>
+                        <th>Status</th>
+                        <th>Output</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        this.state.data.map((row, i) =>
+                            <tr key={i}>
+                                <td>{row.inputFileName}</td>
+                                <td>{row.status + ': ' + row.taskProgress.percentageCompleted + '%'}</td>
+                                <td><a href={'/api/files/' + row.outputUri}>{row.outputUri}</a></td>
+                            </tr>
+                        )
+                    }
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }
@@ -88,21 +114,5 @@ class Basic extends Component {
         );
     }
 }
-
-//
-// class UploadForm extends Component {
-//     render() {
-//         return (
-//             <form className="form-group" method="POST" encType="multipart/form-data" action="/">
-//                 <div className="form-group">
-//                     <label>File to upload
-//                         <input className="form-control-file" type="file" name="file" id="file"/>
-//                     </label>
-//                 </div>
-//                 <button className="btn btn-primary" type="submit">Upload</button>
-//             </form>
-//         );
-//     }
-// }
 
 export default App;
