@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "express-ws": "^3.0.0",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.2",
     "react-dom": "^15.6.1",
     "react-dropzone": "^3.13.4",
     "react-scripts": "1.0.10",
-    "superagent": "^3.5.2"
+    "superagent": "^3.5.2",
+    "ws": "^3.1.0"
   },
   "devDependencies": {
     "express": "^4.15.3",
