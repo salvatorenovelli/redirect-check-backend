@@ -1,7 +1,4 @@
 let app = require('express')();
-// let httpServer = require("http").createServer(app);
-// let ws = require('ws');
-var expressWs = require('express-ws')(app);
 
 let httpProxy = require('http-proxy');
 
@@ -21,13 +18,6 @@ app.all("/api/*", function (req, res) {
 app.all("*", function (req, res) {
     console.log('redirecting to frontend');
     apiProxy.web(req, res, {target: frontend});
-});
-
-app.ws('/', function(ws, req) {
-    ws.on('*', function(msg) {
-        console.log(msg);
-    });
-    console.log('socket', req.testing);
 });
 
 app.listen(3001);
