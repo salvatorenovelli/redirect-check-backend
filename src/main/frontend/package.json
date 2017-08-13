@@ -9,12 +9,12 @@
     "react-dom": "^15.6.1",
     "react-dropzone": "^3.13.4",
     "react-scripts": "1.0.10",
-    "superagent": "^3.5.2",
-    "ws": "^3.1.0"
+    "superagent": "^3.5.2"
   },
   "devDependencies": {
     "express": "^4.15.3",
-    "http-proxy": "^1.16.2"
+    "http-proxy": "^1.16.2",
+    "ws": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
