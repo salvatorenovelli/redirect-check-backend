@@ -45,7 +45,7 @@ public class TaskQueue {
 
 
     public List<RedirectCheckTask> listTasks() {
-        logger.info("Getting tasks for instance {}", instanceNumber);
+        logger.debug("Getting tasks for instance {}", instanceNumber);
         return tasksPerUser;
     }
 
