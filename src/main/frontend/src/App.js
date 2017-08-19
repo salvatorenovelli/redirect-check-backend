@@ -31,25 +31,30 @@ class Tasks extends Component {
         this.state = {
             data: []
         };
+     this.tick = this.tick.bind(this);
     }
 
-    componentDidMount() {
+    tick() {
         Request
             .get('/api/tasks')
             .set('Accept', 'application/json')
             .end((err, res) => {
                 this.setState({data: res.body});
-                console.log(res.body);
             });
     }
 
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+    componentDidMount() {
+        this.interval = setInterval(this.tick, 1000);
+
+    }
+
     render() {
-
-
         return (
-
             <div className="jumbotron">
-
                 <table className="table">
                     <thead>
                     <tr>
