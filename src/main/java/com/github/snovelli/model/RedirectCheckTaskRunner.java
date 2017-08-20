@@ -71,7 +71,7 @@ public class RedirectCheckTaskRunner implements Runnable {
     private List<RedirectCheckResponse> analyse(List<RedirectSpecification> specs) throws IOException, ExecutionException, InterruptedException {
         task.setStatus(TaskStatus.ANALYSING);
         DefaultRedirectChainAnalyser defaultRedirectChainAnalyser = new DefaultRedirectChainAnalyser(new DefaultHttpConnectorFactory());
-        return analyseRedirects(valid(specs), defaultRedirectChainAnalyser, task.getTaskProgress()::tick);
+        return analyseRedirects(specs, defaultRedirectChainAnalyser, task.getTaskProgress()::tick);
     }
 
     private List<RedirectSpecification> parse(Path inputFile) throws IOException {
