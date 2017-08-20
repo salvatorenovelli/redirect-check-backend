@@ -3,6 +3,7 @@ import Dropzone from 'react-dropzone'
 import Request from 'superagent'
 import './App.css';
 
+
 class App extends Component {
     render() {
         return (
@@ -10,7 +11,7 @@ class App extends Component {
                 <div className="App-header">
                     <h2>Welcome to Redirect Check!</h2>
                 </div>
-                <Basic/>
+                <FileUploader/>
                 <Tasks/>
             </div>
         );
@@ -25,7 +26,7 @@ class Tasks extends Component {
         this.state = {
             data: []
         };
-     this.tick = this.tick.bind(this);
+        this.tick = this.tick.bind(this);
     }
 
     tick() {
@@ -74,7 +75,7 @@ class Tasks extends Component {
     }
 }
 
-class Basic extends Component {
+class FileUploader extends Component {
     constructor() {
         super();
         this.state = {files: []}
@@ -96,19 +97,13 @@ class Basic extends Component {
     render() {
         return (
             <section>
-                <div className="dropzone">
-                    <Dropzone onDrop={this.onDrop.bind(this)}>
-                        <p>Try dropping some files here, or click to select files to upload.</p>
+                <div className="dropzone-container">
+                    <Dropzone onDrop={this.onDrop.bind(this)}
+                              className="dropzone"
+                              multiple={false}>
+                        <p>Drop your excel file(s) here, or click to select files to upload.</p>
                     </Dropzone>
                 </div>
-                <aside>
-                    <h2>Dropped files</h2>
-                    <ul>
-                        {
-                            this.state.files.map(f => <li>{f.name} - {f.size} bytes</li>)
-                        }
-                    </ul>
-                </aside>
             </section>
         );
     }
