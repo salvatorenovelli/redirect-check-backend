@@ -23,6 +23,14 @@
   to { transform: rotate(360deg); }
 }
 
+.highlight {
+  padding: 9px 14px;
+  margin-bottom: 14px;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+  border-radius: 4px;
+}
+
 .dropzone-container{
   text-align: center;
   padding-top: 20px;
