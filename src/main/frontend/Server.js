@@ -9,14 +9,17 @@ let frontend = 'http://localhost:3000',
 
 console.log("Proxy started!");
 
+process.on('uncaughtException', function (err) {
+    console.log("Uncaught exception: " + err.message);
+});
 
 app.all("/api/*", function (req, res) {
-    console.log('redirecting to backend');
+    console.log('redirecting ' + req.originalUrl + ' to backend');
     apiProxy.web(req, res, {target: backend});
 });
 
 app.all("*", function (req, res) {
-    console.log('redirecting to frontend');
+    console.log('redirecting ' + req.originalUrl + ' to frontend');
     apiProxy.web(req, res, {target: frontend});
 });
 

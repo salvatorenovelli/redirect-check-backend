@@ -12,11 +12,12 @@
     "superagent": "^3.5.2"
   },
   "devDependencies": {
+    "concurrently": "3.1.0",
     "express": "^4.15.3",
-    "http-proxy": "^1.16.2",
-    "ws": "^3.1.0"
+    "http-proxy": "^1.16.2"
   },
   "scripts": {
+    "develop": "concurrently \"react-scripts start\" \"node Server.js\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
