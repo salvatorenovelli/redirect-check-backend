@@ -11,13 +11,7 @@ class App extends Component {
                     <h2>Welcome to Redirect Check!</h2>
                 </div>
                 <Basic/>
-
                 <Tasks/>
-
-
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
             </div>
         );
     }
@@ -55,7 +49,7 @@ class Tasks extends Component {
     render() {
         return (
             <div className="jumbotron">
-                <table className="table">
+                <table className="table text-left">
                     <thead>
                     <tr>
                         <th>Source File</th>
