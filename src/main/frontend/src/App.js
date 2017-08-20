@@ -11,8 +11,10 @@ class App extends Component {
                 <div className="App-header">
                     <h2>Welcome to Redirect Check!</h2>
                 </div>
-                <FileUploader/>
-                <Tasks/>
+                <div className="container">
+                    <FileUploader/>
+                    <Tasks/>
+                </div>
             </div>
         );
     }
@@ -91,7 +93,7 @@ class FileUploader extends Component {
             req.attach("file", file);
         });
 
-        req.end(() => console.log("done"));
+        req.end(() => console.log("Upload done"));
     }
 
     render() {
@@ -101,7 +103,7 @@ class FileUploader extends Component {
                     <Dropzone onDrop={this.onDrop.bind(this)}
                               className="dropzone"
                               multiple={false}>
-                        <p>Drop your excel file(s) here, or click to select files to upload.</p>
+                        <p>Drop your excel file here, or click to select files to upload.</p>
                     </Dropzone>
                 </div>
             </section>

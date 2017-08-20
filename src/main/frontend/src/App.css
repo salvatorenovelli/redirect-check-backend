@@ -25,7 +25,9 @@
 
 .dropzone-container{
   text-align: center;
-  padding: 20px 5px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
 }
 .dropzone {
   display: flex;
