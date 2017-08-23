@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Request from 'superagent'
 
+import './App.css';
+
 class Tasks extends Component {
 
     constructor() {
