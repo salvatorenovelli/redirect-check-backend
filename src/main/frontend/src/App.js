@@ -4,21 +4,16 @@ import Request from 'superagent'
 import './App.css';
 
 
-class App extends Component {
-    render() {
-        return (
-            <div className="App">
-                <div className="App-header">
-                    <h2>Welcome to Redirect Check!</h2>
-                </div>
-                <div className="container">
-                    <FileUploader/>
-                    <Tasks/>
-                </div>
-            </div>
-        );
-    }
-}
+export default () =>
+    <div className="App">
+        <div className="App-header">
+            <h2>Welcome to Redirect Check!</h2>
+        </div>
+        <div className="container">
+            <FileUploader/>
+            <Tasks/>
+        </div>
+    </div>
 
 
 class Tasks extends Component {
@@ -121,5 +116,3 @@ class FileUploader extends Component {
         );
     }
 }
-
-export default App;
