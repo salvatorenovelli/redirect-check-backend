@@ -1,7 +1,5 @@
 let app = require('express')();
-// let httpServer = require("http").createServer(app);
-// let ws = require('ws');
-var expressWs = require('express-ws')(app);
+require('express-ws')(app);
 let httpProxy = require('http-proxy');
 
 let apiProxy = httpProxy.createProxyServer();

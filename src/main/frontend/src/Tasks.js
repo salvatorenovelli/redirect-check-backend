@@ -18,7 +18,7 @@ class Tasks extends Component {
             .get('/api/tasks')
             .set('Accept', 'application/json')
             .end((err, res) => {
-                if (!err && !res.ok) {
+                if (!err && res.ok) {
                     this.setState({data: res.body});
                 } else {
                     this.setState({data: [
