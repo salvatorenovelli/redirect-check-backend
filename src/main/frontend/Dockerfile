@@ -8,16 +8,11 @@ ENV NPM_CONFIG_LOGLEVEL warn
 # Copy all local files into the image.
 COPY build build
 
-# Build for production.
-#RUN yarn build
-
 # Install `serve` to run the application.
 RUN yarn global add serve
 
 # Set the command to start the node server.
-CMD serve build
-
-#CMD yarn start
+CMD serve build --port 80
 
 # Tell Docker about the port we'll run on.
-EXPOSE 5000
+EXPOSE 80
