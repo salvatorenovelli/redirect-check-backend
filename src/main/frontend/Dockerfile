@@ -11,6 +11,8 @@ COPY build build
 # Install `serve` to run the application.
 RUN yarn global add serve
 
+RUN echo "Hello"
+
 # Set the command to start the node server.
 CMD serve build --port 80
 

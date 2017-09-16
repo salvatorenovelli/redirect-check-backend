@@ -1,30 +1,30 @@
+apiVersion: apps/v1beta1
 kind: Deployment
-apiVersion: extensions/v1beta1
 metadata:
-  name: frontend-production
+  name: redirect-check-frontend
 spec:
-  replicas:
+  replicas: 1
   template:
     metadata:
-      name: frontend
+      name: redirect-check-frontend
       labels:
-        app: redirect-check
+        app: redirect-check-frontend
         role: frontend
         env: production
     spec:
       containers:
-      - name: frontend
-        image: github.com/salvatorenovelli/redirect-check-frontend:1.0.0
+      - name: redirect-check-frontend
+#Image tag is changed by Jenkins during build
+        image: <IMAGE_TAG_DO_NOT_EDIT>
         resources:
           limits:
             memory: "500Mi"
             cpu: "100m"
-        imagePullPolicy: Always
+#        imagePullPolicy: Always
         readinessProbe:
           httpGet:
-            path: /healthz
+            path: /
             port: 80
-        command: ["sh", "-c", "app -frontend=true -backend-service=http://backend:8080 -port=80"]
         ports:
         - name: frontend
           containerPort: 80
