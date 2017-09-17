@@ -5,20 +5,31 @@ export VERSION=`jq -r '.version' package.json`
 export APP_NAME=`jq -r '.name' package.json`
 export IMAGE_TAG=github.com/salvatorenovelli/${APP_NAME}:${VERSION}
 
-yarn install
 
-echo "Building ${IMAGE_TAG}"
-docker build -t ${IMAGE_TAG} .
-
-
-#To run it locally you might want to use this :)
-# $ docker run -it --rm -p 5000:80 ${imageTag}
+if [ -z "$1" ]
+  then
+    echo "No argument supplied"
+    exit
+fi
 
 
-sed -i.bak "s#<IMAGE_TAG_DO_NOT_EDIT>#${IMAGE_TAG}#" k8s/production.yaml
+case $1 in
+    "build" )
+        yarn install
+        echo "Building ${IMAGE_TAG}"
+        docker build -t ${IMAGE_TAG} .
+    ;;
+    "run" )
+        docker run -it --rm -p 5000:80 ${IMAGE_TAG}
+    ;;
+    "deploy" )
+        sed -i.bak "s#<IMAGE_TAG_DO_NOT_EDIT>#${IMAGE_TAG}#" k8s/production.yaml
+        kubectl apply -f k8s/production.yaml
+        mv k8s/production.yaml.bak k8s/production.yaml
+    ;;
+esac
 
-kubectl apply -f k8s/production.yaml
 
-mv k8s/production.yaml.bak k8s/production.yaml
+
 
 
