@@ -3,8 +3,22 @@ require('express-ws')(app);
 let httpProxy = require('http-proxy');
 
 let apiProxy = httpProxy.createProxyServer();
-let frontend = 'http://redirect-ckeck-frontend:80',
-    backend = 'http://redirect-ckeck-backend:8080';
+let frontend = 'http://redirect-check-frontend-service:80',
+    backend = 'http://redirect-check-backend-service:8080';
+
+
+
+const dns = require('dns');
+
+dns.lookup('redirect-check-frontend-service', (err, address, family) => {
+    console.log('redirect-check-frontend-service: %j family: IPv%s', address, family);
+});
+
+dns.lookup('redirect-check-backend-service', (err, address, family) => {
+    console.log('redirect-check-backend-service: %j family: IPv%s', address, family);
+});
+
+
 
 let port = 3001;
 

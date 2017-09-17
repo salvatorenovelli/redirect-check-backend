@@ -16,10 +16,10 @@ spec:
       - name: reverse-proxy
 #Image tag is changed by Jenkins during build
         image: <IMAGE_TAG_DO_NOT_EDIT>
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 80
+#        readinessProbe:
+#          httpGet:
+#            path: /health
+#            port: 80
         ports:
         - name: http
           containerPort: 3001
