@@ -2,22 +2,33 @@
 
 
 export VERSION=`jq -r '.version' package.json`
-export imageTag=github.com/salvatorenovelli/redirect-check-frontend:${VERSION}
-
-yarn build
-
-echo "Building ${imageTag}"
-docker build -t ${imageTag} .
+export APP_NAME=`jq -r '.name' package.json`
+export IMAGE_TAG=github.com/salvatorenovelli/${APP_NAME}:${VERSION}
 
 
-#To run it locally you might want to use this :)
-# $ docker run -it --rm -p 5000:80 ${imageTag}
+if [ -z "$1" ]
+  then
+    echo "No argument supplied"
+    exit
+fi
 
 
-sed -i.bak "s#<IMAGE_TAG_DO_NOT_EDIT>#${imageTag}#" k8s/production.yaml
+case $1 in
+    "build" )
+        yarn build
+        echo "Building ${IMAGE_TAG}"
+        docker build -t ${IMAGE_TAG} .
+    ;;
+    "run" )
+        docker run -it --rm -p 3001:3001 ${IMAGE_TAG}
+    ;;
+    "deploy" )
+        kubectl delete -f k8s/production.yaml
+        sed -i.bak "s#<IMAGE_TAG_DO_NOT_EDIT>#${IMAGE_TAG}#" k8s/production.yaml
+        kubectl apply -f k8s/production.yaml
+        mv k8s/production.yaml.bak k8s/production.yaml
+    ;;
+esac
 
-kubectl apply -f k8s/
-
-mv k8s/production.yaml.bak k8s/production.yaml
 
 
