@@ -49,7 +49,7 @@ public class RedirectCheckTaskRunner implements Runnable {
             serialise(specs, responses, getOutputFileName());
             task.setStatus(COMPLETED);
 
-        } catch (IOException | InterruptedException | ExecutionException e) {
+        } catch (Throwable e) {
             logger.error("Error while running task", e);
             task.setStatus(TaskStatus.FAILED);
         }
