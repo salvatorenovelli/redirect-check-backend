@@ -33,7 +33,7 @@ node {
         case "master":
             // Change deployed image in canary to the one we just built
             sh("sed -i.bak 's#<IMAGE_TAG_DO_NOT_EDIT>#${IMAGE_TAG}#' k8s/production.yaml")
-            sh("kubectl --namespace=production apply -f k8s/production.yaml")
+//            sh("kubectl --namespace=production apply -f k8s/production.yaml")
 
 //            sh("echo http://`kubectl --namespace=production get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
             break
