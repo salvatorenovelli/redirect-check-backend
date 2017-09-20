@@ -30,7 +30,7 @@ case $1 in
     "deploy" )
         kubectl delete -f k8s/production.yaml
         sed -i.bak "s#<IMAGE_TAG_DO_NOT_EDIT>#${IMAGE_TAG}#" k8s/production.yaml
-        kubectl apply -f k8s/production.yaml
+        kubectl apply -f k8s/
         mv k8s/production.yaml.bak k8s/production.yaml
     ;;
 esac

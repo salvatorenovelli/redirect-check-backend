@@ -1,9 +1,13 @@
 #!/bin/sh
 
 
+export PROJECT_ID=redirect-check-180020
 export VERSION=`jq -r '.version' package.json`
-export APP_NAME=`jq -r '.name' package.json`
-export IMAGE_TAG=github.com/salvatorenovelli/${APP_NAME}:${VERSION}
+export ARTIFACT_ID=`jq -r '.name' package.json`
+
+export IMAGE_TAG=gcr.io/${PROJECT_ID}/${ARTIFACT_ID}:${VERSION}
+
+
 
 
 if [ -z "$1" ]
@@ -21,6 +25,9 @@ case $1 in
     ;;
     "run" )
         docker run -it --rm -p 5000:80 ${IMAGE_TAG}
+    ;;
+    "push" )
+        gcloud docker -- push ${IMAGE_TAG}
     ;;
     "deploy" )
         kubectl delete -f k8s/production.yaml
