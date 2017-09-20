@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-export PROJECT_ID=redirect-check-180020/
+export PROJECT_ID=redirect-check-180020
 export VERSION=`xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -m /x:project/x:version  -v . pom.xml`
 export GROUP_ID=`xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -m /x:project/x:groupId  -v . pom.xml`
 export ARTIFACT_ID=`xmlstarlet sel -N x=http://maven.apache.org/POM/4.0.0 -t -m /x:project/x:artifactId  -v . pom.xml`
