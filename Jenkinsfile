@@ -10,6 +10,8 @@ node {
 
     stage 'Build project'
 //    sh("./mvnw package")
+    sh("mkdir target")
+    sh("touch target/something.jar")
 
     stage 'Build image'
     sh("docker build -t ${imageTag} .")
