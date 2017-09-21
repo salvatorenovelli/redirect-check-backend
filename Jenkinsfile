@@ -18,6 +18,13 @@ node {
     sh("gcloud docker -- push ${imageTag}")
 
     stage "Deploy Application"
+    sh("sed -i.bak 's#<IMAGE_TAG_DO_NOT_EDIT>#${imageTag}#' k8s/production.yaml")
+    sh("kubectl apply -f k8s/production.yaml")
+
+//    sh("echo http://`kubectl --namespace=production get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
+
+
+
     switch (env.BRANCH_NAME) {
     // Roll out to canary environment
         case "canary":
