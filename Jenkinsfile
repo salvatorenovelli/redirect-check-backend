@@ -9,9 +9,7 @@ node {
     checkout scm
 
     stage 'Build project'
-//    sh("./mvnw package")
-    sh("mkdir target")
-    sh("touch target/something.jar")
+    sh("./mvnw package")
 
     stage 'Build image'
     sh("docker build -t ${imageTag} .")
@@ -22,7 +20,6 @@ node {
     stage "Deploy Application"
     sh("sed -i.bak 's#<IMAGE_TAG_DO_NOT_EDIT>#${imageTag}#' k8s/production.yaml")
     sh("cat k8s/production.yaml")
-    sh("kubectl get nodes")
     sh("kubectl --namespace=default apply -f k8s/production.yaml")
 
 //    sh("echo http://`kubectl --namespace=production get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
