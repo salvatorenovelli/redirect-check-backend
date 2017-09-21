@@ -9,7 +9,7 @@ node {
     checkout scm
 
     stage 'Build project'
-    sh("./mvnw package")
+//    sh("./mvnw package")
 
     stage 'Build image'
     sh("docker build -t ${imageTag} .")
