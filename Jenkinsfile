@@ -12,7 +12,7 @@ node {
     sh("./mvnw package")
 
     stage 'Build image'
-    sh("docker build -t ${imageTag} .")
+    sh("docker build docker -t ${imageTag}")
 
     stage 'Push image to registry'
     sh("gcloud docker -- push ${imageTag}")
