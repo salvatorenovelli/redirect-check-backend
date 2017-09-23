@@ -22,7 +22,6 @@ case $1 in
     "build" )
         echo "Building ${IMAGE_TAG}"
         mvn clean package || exit 1
-        cp target/*.jar docker
         docker build docker -t ${IMAGE_TAG}
     ;;
     "run" )
