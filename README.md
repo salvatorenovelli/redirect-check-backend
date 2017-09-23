@@ -1,5 +1,5 @@
 
-# Redirect Check Cloud
+# Redirect Check Backend
 
 A cloud friendly single page application to help SEO verify redirect specs have been implemented correctly and don't have regression over time.
 
