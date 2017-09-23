@@ -20,9 +20,10 @@ echo "Going to $1 ${IMAGE_TAG}"
 
 case $1 in
     "build" )
-#        mvn clean package || exit 1
         echo "Building ${IMAGE_TAG}"
-        docker build -t ${IMAGE_TAG} .
+        mvn clean package || exit 1
+        cp target/*.jar docker
+        docker build docker -t ${IMAGE_TAG}
     ;;
     "run" )
         docker run --name ${ARTIFACT_ID} -it --rm -p 8080:8080 -p 5005:5005 ${IMAGE_TAG}
