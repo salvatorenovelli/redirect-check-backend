@@ -4,7 +4,7 @@ A cloud friendly single page application to help SEO verify redirect specs have 
 
 It takes an excel spreadsheet as input. In the spreadsheet you can specify a list of urls and the expected redirect destination, and the application will check that for you outputting an excel report.
 
-##Usage
+## Usage
 
 - Deploy the application to any cloud provider. ( Tested on Heroku)
 - Drag & drop your XLS/XLSX file on to the home page to start the analysis
@@ -12,13 +12,13 @@ It takes an excel spreadsheet as input. In the spreadsheet you can specify a lis
 - Download the output file
 
 
-###How to create a valid input file to run the analysis:
+### How to create a valid input file to run the analysis:
 
 - The input should be formatted with two columns: `sourceURI`,`expectedDestinationURI`. 
 - No titles or headers are necessary.
 
 
-####Example (Excel):
+#### Example (Excel):
 An excel workbook where the *first* visible sheet has a list of rows where the first two columns contain `sourceURI` and `expectedDestinationURI`). i.e: 
 
       |                     A                   |                B                |
@@ -33,12 +33,12 @@ Optionally you can add a third column with the expected status code (in case you
     2 | http://www.example.com/nonexistentpage  | http://www.example.com/notfound |  404  |
     ...etc...
 
-###Output
+### Output
 An xlsx file with the actual redirect destination, HTTP status code, result (as is SUCCESS or FAILURE) result of every redirect in the input.
    
 
 
-##Conceps
+## Conceps
 In [SEO][2], during a website structure/domain migration is common to have a very long list of URLs that need to be redirected to another location, and this list needs to be checked periodically for completion and regression.
 
 Creating such list is already cumbersome but verifying it (periodically) is repetitive, therefore should (must!) be automated. 
