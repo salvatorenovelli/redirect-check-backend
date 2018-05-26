@@ -14,15 +14,8 @@ node {
     stage 'Build image'
     sh("docker build docker -t ${imageTag}")
 
-    stage 'Push image to registry'
-    sh("gcloud docker -- push ${imageTag}")
 
-    stage "Deploy Application"
-    sh("sed -i.bak 's#<IMAGE_TAG_DO_NOT_EDIT>#${imageTag}#' k8s/production.yaml")
-    sh("cat k8s/production.yaml")
-    sh("kubectl --namespace=default apply -f k8s/production.yaml")
-
-//    sh("echo http://`kubectl --namespace=production get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
+//  sh("echo http://`kubectl --namespace=production get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
 
 
 
