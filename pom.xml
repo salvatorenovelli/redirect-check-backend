@@ -63,7 +63,7 @@
         <dependency>
             <groupId>com.github.salvatorenovelli.redirect-check</groupId>
             <artifactId>redirect-check-api</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
 
     </dependencies>
