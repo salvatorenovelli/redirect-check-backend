@@ -10,11 +10,18 @@ public class TaskProgress {
 
     private final AtomicInteger ticks = new AtomicInteger(0);
     private volatile int totalTicks;
+    private volatile int lastLogPct = -1;
 
     public void tick() {
         ticks.incrementAndGet();
-        logger.info("CurPct: {}", getPercentageCompleted());
+
+        int percentageCompleted = getPercentageCompleted();
+        if (lastLogPct < percentageCompleted) {
+            logger.info("CurPct: {}", percentageCompleted);
+            lastLogPct = percentageCompleted;
+        }
     }
+
 
     public int getPercentageCompleted() {
         if (ticks.get() == 0) {
