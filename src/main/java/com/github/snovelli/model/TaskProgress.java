@@ -1,10 +1,12 @@
 package com.github.snovelli.model;
 
+import net.jcip.annotations.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+@ThreadSafe
 public class TaskProgress {
     private static final Logger logger = LoggerFactory.getLogger(TaskProgress.class);
 
