@@ -21,7 +21,6 @@ public class FileSystemStorageServiceTest {
     public void setUp() throws Exception {
         sut = new FileSystemStorageService(tmpFolder.getRoot().toPath());
         sut.init();
-
     }
 
     @Test
