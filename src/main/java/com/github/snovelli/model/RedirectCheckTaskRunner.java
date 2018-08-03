@@ -44,9 +44,13 @@ public class RedirectCheckTaskRunner implements Runnable {
         try {
 
             task.setStatus(IN_PROGRESS);
+            logger.info("Initiating parse of '{}' ...", task.getInputFile());
             List<RedirectSpecification> specs = parse(task.getInputFile());
+            logger.info("Parse of '{}' completed! Initiating Analysis...", task.getInputFile());
             List<RedirectCheckResponse> responses = analyse(specs);
+            logger.info("Analysis of '{}' completed! Initiating serialization...", task.getInputFile());
             serialise(specs, responses, getOutputFileName());
+            logger.info("Serialization of '{}' completed!", task.getInputFile());
             task.setStatus(COMPLETED);
 
         } catch (Throwable e) {
