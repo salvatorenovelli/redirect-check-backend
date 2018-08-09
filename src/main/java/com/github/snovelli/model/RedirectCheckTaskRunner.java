@@ -1,6 +1,7 @@
 package com.github.snovelli.model;
 
 
+import com.github.salvatorenovelli.redirectcheck.Constants;
 import com.github.salvatorenovelli.redirectcheck.DefaultRedirectSpecAnalyser;
 import com.github.salvatorenovelli.redirectcheck.ParallelRedirectSpecAnalyser;
 import com.github.salvatorenovelli.redirectcheck.RedirectCheckResponseFactory;
@@ -21,6 +22,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import static com.github.snovelli.model.TaskStatus.*;
@@ -30,7 +32,7 @@ public class RedirectCheckTaskRunner implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(RedirectCheckTaskRunner.class);
 
-    private static final int NUM_WORKERS = 10;
+    private static final int NUM_WORKERS = 15;
     private final RedirectCheckTask task;
 
 
@@ -96,7 +98,8 @@ public class RedirectCheckTaskRunner implements Runnable {
                 new ParallelRedirectSpecAnalyser(NUM_WORKERS,
                         new DefaultRedirectSpecAnalyser(chainAnalyser,
                                 new RedirectCheckResponseFactory(),
-                                progressBar));
+                                progressBar, Executors.newFixedThreadPool(NUM_WORKERS), Constants.DEFAULT_CONNECTION_TIMEOUT));
+
         return analyser.runParallelAnalysis(specs);
 
     }

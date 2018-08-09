@@ -31,7 +31,7 @@ public class RedirectCheckCloudApplication {
 
     @Bean
     public ExecutorService getExecutorService() {
-        return Executors.newSingleThreadExecutor();
+        return Executors.newFixedThreadPool(3);
     }
 
 }
