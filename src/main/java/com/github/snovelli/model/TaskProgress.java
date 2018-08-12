@@ -18,7 +18,7 @@ public class TaskProgress {
         ticks.incrementAndGet();
 
         int percentageCompleted = getPercentageCompleted();
-        if (lastLogPct < percentageCompleted) {
+        if (lastLogPct < percentageCompleted) { //Not really threadsafe. Worse that can happen it will print it more than once with the same %
             logger.info("CurPct: {}", percentageCompleted);
             lastLogPct = percentageCompleted;
         }

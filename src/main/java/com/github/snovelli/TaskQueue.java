@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @SessionScope
 @Component
+
 public class TaskQueue {
 
 
